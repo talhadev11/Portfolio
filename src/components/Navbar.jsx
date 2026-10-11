@@ -86,14 +86,14 @@ export const Navbar = () => {
         </a>
 
         {/* Desktop Nav Links */}
-        <nav className="hidden md:flex items-center gap-1 lg:gap-2">
+        <nav className="hidden lg:flex items-center gap-1 xl:gap-2">
           {navItems.map((item) => {
             const isActive = activeSection === item.href.replace('#', '');
             return (
               <a
                 key={item.name}
                 href={item.href}
-                className={`relative px-3.5 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
+                className={`relative px-3 xl:px-3.5 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
                   isActive
                     ? 'text-brand-purple dark:text-white font-semibold'
                     : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-200/50 dark:hover:bg-slate-800/50'
@@ -112,8 +112,8 @@ export const Navbar = () => {
           })}
         </nav>
 
-        {/* Right CTA & Theme Toggle */}
-        <div className="hidden md:flex items-center gap-3">
+        {/* Right CTA & Theme Toggle (Desktop) */}
+        <div className="hidden lg:flex items-center gap-3">
           <ThemeToggle />
           <a
             href="#contact"
@@ -124,8 +124,8 @@ export const Navbar = () => {
           </a>
         </div>
 
-        {/* Mobile Hamburger & Toggle */}
-        <div className="flex md:hidden items-center gap-2">
+        {/* Mobile / Tablet Hamburger & Toggle */}
+        <div className="flex lg:hidden items-center gap-2">
           <ThemeToggle />
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}

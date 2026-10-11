@@ -17,11 +17,11 @@ export const Footer = () => {
   };
 
   return (
-    <footer className="relative border-t border-slate-200 dark:border-slate-800 bg-white/50 dark:bg-dark-surface/40 backdrop-blur-md pt-16 pb-12 transition-colors">
+    <footer className="relative border-t border-slate-200 dark:border-slate-800 bg-white/50 dark:bg-dark-surface/40 backdrop-blur-md pt-10 sm:pt-16 pb-8 sm:pb-12 transition-colors">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-10 mb-12">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 sm:gap-10 mb-8 sm:mb-12">
           {/* Brand Info */}
-          <div className="md:col-span-2 space-y-4">
+          <div className="col-span-1 sm:col-span-2 md:col-span-2 space-y-3 sm:space-y-4">
             <div className="flex items-center gap-2.5">
               <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-brand-violet to-brand-cyan p-0.5 shadow-glow-violet">
                 <div className="w-full h-full bg-dark-bg rounded-[10px] flex items-center justify-center">

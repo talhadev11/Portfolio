@@ -31,15 +31,15 @@ export const ProjectsSection = () => {
         />
 
         {/* Filter Tabs Bar */}
-        <div className="flex justify-center mb-12">
-          <div className="inline-flex p-1.5 rounded-2xl bg-slate-200/80 dark:bg-slate-800/80 border border-slate-300/80 dark:border-slate-700/80 backdrop-blur-md shadow-inner">
+        <div className="flex justify-center mb-8 sm:mb-12">
+          <div className="flex flex-wrap justify-center gap-1 p-1.5 rounded-2xl bg-slate-200/80 dark:bg-slate-800/80 border border-slate-300/80 dark:border-slate-700/80 backdrop-blur-md shadow-inner">
             {filterTabs.map((tab) => {
               const isActive = activeFilter === tab.id;
               return (
                 <button
                   key={tab.id}
                   onClick={() => setActiveFilter(tab.id)}
-                  className={`relative px-5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all duration-200 focus:outline-none ${
+                  className={`relative px-3 sm:px-5 py-2 sm:py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all duration-200 focus:outline-none ${
                     isActive
                       ? 'text-white'
                       : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
@@ -52,10 +52,10 @@ export const ProjectsSection = () => {
                       transition={{ type: "spring", stiffness: 400, damping: 30 }}
                     />
                   )}
-                  <span className="relative z-10 flex items-center gap-1.5">
-                    {tab.id === 'web' && <Globe className="w-3.5 h-3.5" />}
-                    {tab.id === 'mobile' && <Smartphone className="w-3.5 h-3.5" />}
-                    {tab.id === 'all' && <Sparkles className="w-3.5 h-3.5" />}
+                  <span className="relative z-10 flex items-center gap-1 sm:gap-1.5">
+                    {tab.id === 'web' && <Globe className="w-3 h-3 sm:w-3.5 sm:h-3.5" />}
+                    {tab.id === 'mobile' && <Smartphone className="w-3 h-3 sm:w-3.5 sm:h-3.5" />}
+                    {tab.id === 'all' && <Sparkles className="w-3 h-3 sm:w-3.5 sm:h-3.5" />}
                     {tab.label}
                   </span>
                 </button>
@@ -81,7 +81,10 @@ export const ProjectsSection = () => {
                 className="group glass-card rounded-3xl overflow-hidden border border-slate-200 dark:border-slate-800/80 flex flex-col justify-between hover:border-brand-purple/50 shadow-md hover:shadow-glow-violet transition-all duration-300"
               >
                 {/* Top Image / Graphic Mockup with Hover Overlay */}
-                <div className={`relative h-48 sm:h-52 bg-gradient-to-br ${project.gradient} p-5 flex flex-col justify-between overflow-hidden`}>
+                <div
+                  onClick={() => setSelectedProject(project)}
+                  className={`cursor-pointer relative h-40 sm:h-48 bg-gradient-to-br ${project.gradient} p-4 sm:p-5 flex flex-col justify-between overflow-hidden`}
+                >
                   {project.image && (
                     <img
                       src={project.image}
@@ -111,15 +114,18 @@ export const ProjectsSection = () => {
 
                   {/* Visual Center Graphic representation */}
                   <div className="my-auto text-center z-10">
-                    <div className="text-white/90 font-mono text-xs uppercase tracking-widest bg-black/30 backdrop-blur-sm py-1 px-3 rounded-lg inline-block border border-white/10">
+                    <div className="text-white/90 font-mono text-[11px] sm:text-xs uppercase tracking-widest bg-black/30 backdrop-blur-sm py-1 px-3 rounded-lg inline-block border border-white/10">
                       {project.category === 'web' ? 'Browser Platform' : 'iOS & Android Native'}
                     </div>
                   </div>
 
-                  {/* Hover Overlay with Live Demo and GitHub icon links */}
-                  <div className="absolute inset-0 bg-slate-950/85 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center gap-4 z-20">
+                  {/* Hover Overlay with Live Demo and GitHub icon links (desktop hover) */}
+                  <div className="absolute inset-0 bg-slate-950/85 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300 hidden sm:flex items-center justify-center gap-4 z-20">
                     <button
-                      onClick={() => setSelectedProject(project)}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setSelectedProject(project);
+                      }}
                       className="w-11 h-11 rounded-full bg-white/15 hover:bg-white text-white hover:text-slate-900 flex items-center justify-center transition-all duration-200 shadow-lg transform hover:scale-110"
                       title="Quick Deep Dive"
                       aria-label={`View details for ${project.title}`}
@@ -130,6 +136,7 @@ export const ProjectsSection = () => {
                       href={project.liveUrl}
                       target="_blank"
                       rel="noreferrer"
+                      onClick={(e) => e.stopPropagation()}
                       className="w-11 h-11 rounded-full bg-brand-violet hover:bg-violet-500 text-white flex items-center justify-center transition-all duration-200 shadow-lg transform hover:scale-110"
                       title="Live Demo"
                       aria-label={`Live Demo for ${project.title}`}
@@ -140,6 +147,7 @@ export const ProjectsSection = () => {
                       href={project.githubUrl}
                       target="_blank"
                       rel="noreferrer"
+                      onClick={(e) => e.stopPropagation()}
                       className="w-11 h-11 rounded-full bg-white/15 hover:bg-white text-white hover:text-slate-900 flex items-center justify-center transition-all duration-200 shadow-lg transform hover:scale-110"
                       title="GitHub Repository"
                       aria-label={`GitHub repo for ${project.title}`}
@@ -153,19 +161,22 @@ export const ProjectsSection = () => {
                 </div>
 
                 {/* Card Content */}
-                <div className="p-6 flex-1 flex flex-col justify-between space-y-4">
+                <div className="p-5 sm:p-6 flex-1 flex flex-col justify-between space-y-4">
                   <div>
-                    <h3 className="text-xl font-bold font-display text-slate-900 dark:text-white group-hover:text-brand-purple transition-colors mb-2">
+                    <h3
+                      onClick={() => setSelectedProject(project)}
+                      className="text-lg sm:text-xl font-bold font-display text-slate-900 dark:text-white group-hover:text-brand-purple transition-colors mb-2 cursor-pointer"
+                    >
                       {project.title}
                     </h3>
-                    <p className="text-sm text-slate-600 dark:text-slate-400 line-clamp-2 leading-relaxed">
+                    <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 line-clamp-2 leading-relaxed">
                       {project.shortDescription}
                     </p>
                   </div>
 
                   {/* Tech Tags */}
                   <div>
-                    <div className="flex flex-wrap gap-1.5 pt-2">
+                    <div className="flex flex-wrap gap-1.5 pt-1">
                       {project.tags.slice(0, 4).map((tag) => (
                         <span
                           key={tag}
@@ -186,17 +197,17 @@ export const ProjectsSection = () => {
                   <div className="pt-4 border-t border-slate-200 dark:border-slate-800/80 flex items-center justify-between text-xs">
                     <button
                       onClick={() => setSelectedProject(project)}
-                      className="text-brand-purple hover:underline font-semibold flex items-center gap-1"
+                      className="text-brand-purple hover:underline font-semibold flex items-center gap-1.5 py-1"
                     >
                       <span>Case Study</span>
                       <Eye className="w-3.5 h-3.5" />
                     </button>
-                    <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-2 sm:gap-3">
                       <a
                         href={project.githubUrl}
                         target="_blank"
                         rel="noreferrer"
-                        className="text-slate-500 hover:text-slate-900 dark:hover:text-white transition-colors"
+                        className="p-1.5 rounded-lg text-slate-500 hover:text-slate-900 dark:hover:text-white transition-colors"
                         aria-label="GitHub Code"
                       >
                         <Github className="w-4 h-4" />
@@ -205,7 +216,7 @@ export const ProjectsSection = () => {
                         href={project.liveUrl}
                         target="_blank"
                         rel="noreferrer"
-                        className="text-slate-500 hover:text-brand-purple transition-colors"
+                        className="p-1.5 rounded-lg text-slate-500 hover:text-brand-purple transition-colors"
                         aria-label="Live Demo"
                       >
                         <ExternalLink className="w-4 h-4" />

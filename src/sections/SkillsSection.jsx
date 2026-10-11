@@ -87,7 +87,7 @@ export const SkillsSection = () => {
           subtitle="Curated toolchain developed over 6+ years of shipping enterprise web architectures and high-performance mobile apps."
         />
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6 lg:gap-8">
           {skillsData.map((category, catIdx) => (
             <motion.div
               key={category.category}
@@ -95,18 +95,18 @@ export const SkillsSection = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-50px" }}
               transition={{ duration: 0.5, delay: catIdx * 0.1 }}
-              className={`glass-card rounded-3xl p-6 sm:p-7 border border-slate-200 dark:border-slate-800/80 flex flex-col justify-between hover:shadow-glow-violet transition-all duration-300 ${
+              className={`glass-card rounded-3xl p-5 sm:p-7 border border-slate-200 dark:border-slate-800/80 flex flex-col justify-between hover:shadow-glow-violet transition-all duration-300 ${
                 catIdx === 0 ? 'lg:col-span-2' : ''
-              }`}
+              } ${catIdx === 4 ? 'md:col-span-2 lg:col-span-1' : ''}`}
             >
               <div>
                 {/* Card Header */}
-                <div className="flex items-center gap-3.5 mb-4">
-                  <div className="w-12 h-12 rounded-2xl bg-slate-100 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700/60 flex items-center justify-center shrink-0">
+                <div className="flex items-center gap-3 sm:gap-3.5 mb-4">
+                  <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-2xl bg-slate-100 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700/60 flex items-center justify-center shrink-0">
                     {getCategoryIcon(category.category)}
                   </div>
                   <div>
-                    <h3 className="font-display font-bold text-lg sm:text-xl text-slate-900 dark:text-white">
+                    <h3 className="font-display font-bold text-base sm:text-xl text-slate-900 dark:text-white">
                       {category.category}
                     </h3>
                     <p className="text-xs text-slate-500 dark:text-slate-400 line-clamp-1">
@@ -116,19 +116,19 @@ export const SkillsSection = () => {
                 </div>
 
                 {/* Skill Badges Set */}
-                <div className="flex flex-wrap gap-2.5 pt-2">
+                <div className="flex flex-wrap gap-2 sm:gap-2.5 pt-2">
                   {category.skills.map((skill) => (
                     <div
                       key={skill.name}
-                      className="group flex items-center gap-2 px-3.5 py-2 rounded-xl bg-slate-100/90 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700/60 text-slate-800 dark:text-slate-200 hover:border-brand-purple/60 hover:bg-white dark:hover:bg-slate-700/80 transition-all duration-200 shadow-sm"
+                      className="group flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3.5 py-1.5 sm:py-2 rounded-xl bg-slate-100/90 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700/60 text-slate-800 dark:text-slate-200 hover:border-brand-purple/60 hover:bg-white dark:hover:bg-slate-700/80 transition-all duration-200 shadow-sm max-w-full"
                     >
                       <div className="shrink-0 group-hover:scale-110 transition-transform">
                         {getSkillIcon(skill.name)}
                       </div>
-                      <span className="text-xs sm:text-sm font-medium tracking-tight">
+                      <span className="text-xs sm:text-sm font-medium tracking-tight break-words">
                         {skill.name}
                       </span>
-                      <span className="text-[10px] uppercase font-mono text-slate-400 dark:text-slate-400 bg-slate-200/60 dark:bg-slate-900/60 px-1.5 py-0.5 rounded ml-1">
+                      <span className="text-[9px] sm:text-[10px] uppercase font-mono text-slate-400 dark:text-slate-400 bg-slate-200/60 dark:bg-slate-900/60 px-1 sm:px-1.5 py-0.5 rounded ml-0.5 sm:ml-1 shrink-0">
                         {skill.level}
                       </span>
                     </div>
@@ -137,7 +137,7 @@ export const SkillsSection = () => {
               </div>
 
               {/* Bottom Subtle Status */}
-              <div className="pt-6 mt-6 border-t border-slate-200 dark:border-slate-800/70 flex items-center justify-between text-xs text-slate-500 dark:text-slate-400 font-mono">
+              <div className="pt-5 sm:pt-6 mt-5 sm:mt-6 border-t border-slate-200 dark:border-slate-800/70 flex items-center justify-between text-xs text-slate-500 dark:text-slate-400 font-mono">
                 <span>{category.skills.length} core competencies</span>
                 <span className="text-brand-purple">Production Ready</span>
               </div>

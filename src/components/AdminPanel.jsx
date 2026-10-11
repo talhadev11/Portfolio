@@ -30,6 +30,8 @@ export const AdminPanel = ({ onBack }) => {
   const [msgSearch, setMsgSearch] = useState('');
   const [msgFilter, setMsgFilter] = useState('all');
   const [selectedMsg, setSelectedMsg] = useState(null);
+  // Mobile: show detail pane instead of list pane
+  const [mobileShowDetail, setMobileShowDetail] = useState(false);
 
   // In-Panel Direct Email Reply State
   const [replySubject, setReplySubject] = useState('');
@@ -446,46 +448,47 @@ export const AdminPanel = ({ onBack }) => {
   ];
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 p-4 sm:p-6 lg:p-8 font-sans selection:bg-purple-500/30">
-      <div className="max-w-7xl mx-auto space-y-6">
+    <div className="min-h-screen bg-slate-950 text-slate-100 p-3 sm:p-6 lg:p-8 font-sans selection:bg-purple-500/30">
+      <div className="max-w-7xl mx-auto space-y-4 sm:space-y-6">
 
         {/* Top Navigation Bar */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-slate-800">
-          <div className="flex items-center gap-3">
+        <div className="flex flex-col gap-3 pb-4 sm:pb-6 border-b border-slate-800">
+          {/* Row 1: Back button + Title */}
+          <div className="flex items-center gap-2 sm:gap-3">
             <button
               onClick={onBack}
-              className="p-2.5 rounded-xl bg-slate-900 border border-slate-800 hover:border-slate-700 text-slate-400 hover:text-white transition-all flex items-center gap-2 text-xs font-semibold"
+              className="shrink-0 p-2 sm:p-2.5 rounded-xl bg-slate-900 border border-slate-800 hover:border-slate-700 text-slate-400 hover:text-white transition-all flex items-center gap-1.5 text-xs font-semibold"
             >
               <ArrowLeft className="w-4 h-4" />
-              <span>Back to Portfolio</span>
+              <span className="hidden sm:inline">Back to Portfolio</span>
             </button>
-            <div className="h-6 w-px bg-slate-800"></div>
-            <div className="flex items-center gap-2.5">
-              <div className="w-9 h-9 rounded-xl bg-purple-600/20 text-purple-400 flex items-center justify-center font-bold">
-                <ShieldCheck className="w-5 h-5 text-purple-400" />
+            <div className="h-6 w-px bg-slate-800 hidden sm:block"></div>
+            <div className="flex items-center gap-2">
+              <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-purple-600/20 text-purple-400 flex items-center justify-center shrink-0">
+                <ShieldCheck className="w-4 h-4 sm:w-5 sm:h-5 text-purple-400" />
               </div>
-              <div>
-                <h1 className="text-xl font-bold text-white font-display">Portfolio Control Center</h1>
-                <p className="text-xs text-slate-400">Manage all live frontend content directly from MongoDB</p>
+              <div className="min-w-0">
+                <h1 className="text-base sm:text-xl font-bold text-white font-display leading-tight">Portfolio Control Center</h1>
+                <p className="text-[10px] sm:text-xs text-slate-400 hidden sm:block">Manage all live frontend content directly from MongoDB</p>
               </div>
             </div>
           </div>
 
-          {/* Database Status & Seed Action */}
-          <div className="flex flex-wrap items-center gap-3">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-semibold bg-slate-900 border border-slate-800">
+          {/* Row 2: Status + Actions */}
+          <div className="flex flex-wrap items-center gap-2">
+            <div className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-full text-xs font-semibold bg-slate-900 border border-slate-800">
               <span
-                className={`w-2.5 h-2.5 rounded-full ${
+                className={`w-2 h-2 rounded-full shrink-0 ${
                   dbStatus === 'connected' ? 'bg-emerald-400 animate-pulse' : 'bg-rose-500'
                 }`}
               ></span>
-              <span>MongoDB: <strong className={dbStatus === 'connected' ? 'text-emerald-400' : 'text-rose-400'}>{dbStatus}</strong></span>
+              <span className="text-[11px]">DB: <strong className={dbStatus === 'connected' ? 'text-emerald-400' : 'text-rose-400'}>{dbStatus}</strong></span>
             </div>
 
             <button
               onClick={handleForceSeed}
               disabled={isSaving}
-              className="px-3.5 py-1.5 rounded-xl bg-slate-900 border border-slate-800 hover:bg-slate-800 text-xs font-semibold text-slate-300 hover:text-white transition-all flex items-center gap-1.5"
+              className="px-3 py-1.5 rounded-xl bg-slate-900 border border-slate-800 hover:bg-slate-800 text-xs font-semibold text-slate-300 hover:text-white transition-all flex items-center gap-1.5"
               title="Reset MongoDB with default portfolio data"
             >
               <RotateCcw className="w-3.5 h-3.5" />
@@ -521,7 +524,7 @@ export const AdminPanel = ({ onBack }) => {
         </AnimatePresence>
 
         {/* Section Tabs Bar */}
-        <div className="flex items-center gap-2 overflow-x-auto pb-2 border-b border-slate-800/80 custom-scrollbar">
+        <div className="flex items-center gap-1.5 sm:gap-2 overflow-x-auto pb-2 border-b border-slate-800/80 custom-scrollbar -mx-3 px-3 sm:mx-0 sm:px-0">
           {tabs.map((t) => {
             const Icon = t.icon;
             const isActive = activeTab === t.id;
@@ -529,13 +532,13 @@ export const AdminPanel = ({ onBack }) => {
               <button
                 key={t.id}
                 onClick={() => setActiveTab(t.id)}
-                className={`px-4 py-2.5 rounded-xl text-xs font-semibold flex items-center gap-2 transition-all whitespace-nowrap ${
+                className={`shrink-0 px-3 sm:px-4 py-2 sm:py-2.5 rounded-xl text-[11px] sm:text-xs font-semibold flex items-center gap-1.5 sm:gap-2 transition-all whitespace-nowrap ${
                   isActive
                     ? 'bg-purple-600 text-white shadow-lg shadow-purple-600/30'
                     : 'bg-slate-900/80 text-slate-400 hover:text-white hover:bg-slate-800 border border-slate-800/80'
                 }`}
               >
-                <Icon className="w-4 h-4" />
+                <Icon className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                 <span>{t.label}</span>
               </button>
             );
@@ -865,7 +868,7 @@ export const AdminPanel = ({ onBack }) => {
                     )}
                   </div>
 
-                  <div className="grid grid-cols-2 gap-3">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div>
                       <label className="block text-[11px] font-semibold text-slate-400 mb-1">Live Demo URL</label>
                       <input
@@ -928,9 +931,9 @@ export const AdminPanel = ({ onBack }) => {
 
             <div className="space-y-6">
               {experienceForm.map((exp, eIdx) => (
-                <div key={exp._id || exp.id || eIdx} className="p-5 rounded-2xl bg-slate-950 border border-slate-800 space-y-4">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-3">
+                <div key={exp._id || exp.id || eIdx} className="p-4 sm:p-5 rounded-2xl bg-slate-950 border border-slate-800 space-y-4">
+                  <div className="flex items-start justify-between gap-2">
+                    <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-3 min-w-0 flex-1">
                       <input
                         type="text"
                         value={exp.role}
@@ -939,9 +942,10 @@ export const AdminPanel = ({ onBack }) => {
                           copy[eIdx].role = e.target.value;
                           setExperienceForm(copy);
                         }}
-                        className="text-base font-bold text-white bg-transparent border-b border-transparent focus:border-purple-500 focus:outline-none"
+                        className="text-sm sm:text-base font-bold text-white bg-transparent border-b border-transparent focus:border-purple-500 focus:outline-none w-full"
+                        placeholder="Role / Title"
                       />
-                      <span className="text-xs text-slate-500 font-semibold">at</span>
+                      <span className="text-xs text-slate-500 font-semibold hidden sm:inline">at</span>
                       <input
                         type="text"
                         value={exp.company}
@@ -950,19 +954,20 @@ export const AdminPanel = ({ onBack }) => {
                           copy[eIdx].company = e.target.value;
                           setExperienceForm(copy);
                         }}
-                        className="text-sm font-semibold text-purple-400 bg-transparent border-b border-transparent focus:border-purple-500 focus:outline-none"
+                        className="text-xs sm:text-sm font-semibold text-purple-400 bg-transparent border-b border-transparent focus:border-purple-500 focus:outline-none w-full"
+                        placeholder="Company Name"
                       />
                     </div>
 
                     <button
                       onClick={() => handleDeleteExperience(exp._id || exp.id)}
-                      className="p-1.5 rounded-lg bg-rose-500/10 text-rose-400 text-xs flex items-center gap-1"
+                      className="shrink-0 p-1.5 rounded-lg bg-rose-500/10 text-rose-400 text-xs flex items-center gap-1"
                     >
                       <Trash2 className="w-3.5 h-3.5" />
                     </button>
                   </div>
 
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                     <div>
                       <label className="block text-[11px] text-slate-400 mb-1 font-semibold">Period / Duration</label>
                       <input
@@ -1034,7 +1039,7 @@ export const AdminPanel = ({ onBack }) => {
                 <h3 className="text-sm font-bold text-purple-400 uppercase tracking-wider">Degrees & Academics</h3>
                 {(educationForm.degrees || []).map((deg, dIdx) => (
                   <div key={deg.id || dIdx} className="p-4 rounded-2xl bg-slate-950 border border-slate-800 space-y-3">
-                    <div className="grid grid-cols-2 gap-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                       <div>
                         <label className="block text-[11px] text-slate-400 mb-1">Degree Title</label>
                         <input
@@ -1071,7 +1076,7 @@ export const AdminPanel = ({ onBack }) => {
                 <h3 className="text-sm font-bold text-emerald-400 uppercase tracking-wider">Certifications</h3>
                 {(educationForm.certifications || []).map((cert, cIdx) => (
                   <div key={cert.id || cIdx} className="p-4 rounded-2xl bg-slate-950 border border-slate-800 space-y-3">
-                    <div className="grid grid-cols-2 gap-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                       <div>
                         <label className="block text-[11px] text-slate-400 mb-1">Certification Title</label>
                         <input
@@ -1108,9 +1113,9 @@ export const AdminPanel = ({ onBack }) => {
 
         {/* TAB 6: MESSAGES & DIRECT EMAIL REPLY */}
         {activeTab === 'messages' && (
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-            {/* Left: Message List & Filters */}
-            <div className="lg:col-span-4 space-y-3">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6 items-start">
+            {/* Left: Message List & Filters — hidden on mobile when detail is shown */}
+            <div className={`lg:col-span-4 space-y-3 ${mobileShowDetail ? 'hidden lg:block' : 'block'}`}>
               <div className="flex items-center justify-between pb-2 border-b border-slate-800">
                 <div className="flex items-center gap-2">
                   <Mail className="w-4 h-4 text-purple-400" />
@@ -1118,12 +1123,12 @@ export const AdminPanel = ({ onBack }) => {
                     Inbox ({messages.length})
                   </h3>
                 </div>
-                <div className="flex items-center gap-1">
+                <div className="flex items-center gap-1 overflow-x-auto">
                   {['all', 'unread', 'replied'].map((flt) => (
                     <button
                       key={flt}
                       onClick={() => setMsgFilter(flt)}
-                      className={`px-2 py-0.5 rounded-lg text-[10px] font-semibold uppercase tracking-wider transition-colors ${
+                      className={`shrink-0 px-2 py-0.5 rounded-lg text-[10px] font-semibold uppercase tracking-wider transition-colors ${
                         msgFilter === flt
                           ? 'bg-purple-600 text-white'
                           : 'bg-slate-900 text-slate-400 hover:text-white'
@@ -1135,7 +1140,7 @@ export const AdminPanel = ({ onBack }) => {
                 </div>
               </div>
 
-              <div className="space-y-2 max-h-[620px] overflow-y-auto custom-scrollbar pr-1">
+              <div className="space-y-2 max-h-[60vh] lg:max-h-[620px] overflow-y-auto custom-scrollbar pr-1">
                 {messages.length === 0 && (
                   <div className="p-8 text-center bg-slate-900/40 rounded-2xl border border-slate-800 text-slate-500 text-xs">
                     No contact inquiries found.
@@ -1154,7 +1159,7 @@ export const AdminPanel = ({ onBack }) => {
                     return (
                       <div
                         key={m._id}
-                        onClick={() => setSelectedMsg(m)}
+                        onClick={() => { setSelectedMsg(m); setMobileShowDetail(true); }}
                         className={`p-3.5 rounded-2xl border cursor-pointer transition-all duration-200 relative ${
                           isSelected
                             ? 'bg-purple-950/40 border-purple-500/60 shadow-lg shadow-purple-950/30'
@@ -1203,16 +1208,37 @@ export const AdminPanel = ({ onBack }) => {
               </div>
             </div>
 
-            {/* Right: Selected Message Details & Interactive Reply Box */}
-            <div className="lg:col-span-8">
+            {/* Right: Selected Message Details & Interactive Reply Box — hidden on mobile when list is shown */}
+            <div className={`lg:col-span-8 ${mobileShowDetail ? 'block' : 'hidden lg:block'}`}>
               {selectedMsg ? (
-                <div className="bg-slate-900/90 border border-slate-800 rounded-3xl p-6 space-y-6 shadow-xl">
+                <div className="bg-slate-900/90 border border-slate-800 rounded-3xl p-4 sm:p-6 space-y-4 sm:space-y-6 shadow-xl">
                   
                   {/* Message Header */}
-                  <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4 pb-5 border-b border-slate-800">
+                  <div className="flex flex-col gap-3 pb-4 sm:pb-5 border-b border-slate-800">
+                    {/* Mobile back button */}
+                    <div className="flex items-center justify-between">
+                      <button
+                        onClick={() => setMobileShowDetail(false)}
+                        className="lg:hidden flex items-center gap-1.5 text-xs text-slate-400 hover:text-white transition-colors"
+                      >
+                        <ArrowLeft className="w-4 h-4" />
+                        <span>Back to Inbox</span>
+                      </button>
+                      <div className="flex items-center gap-2">
+                        <button
+                          onClick={() => handleDeleteMessage(selectedMsg._id)}
+                          className="p-2 rounded-xl bg-rose-500/10 hover:bg-rose-500/20 border border-rose-500/20 text-rose-400 text-xs flex items-center gap-1.5 transition-colors"
+                          title="Delete inquiry"
+                        >
+                          <Trash2 className="w-3.5 h-3.5" />
+                          <span className="hidden sm:inline">Delete</span>
+                        </button>
+                      </div>
+                    </div>
+
                     <div className="space-y-1">
-                      <div className="flex items-center gap-2.5">
-                        <h3 className="text-lg font-bold text-white font-display">{selectedMsg.subject}</h3>
+                      <div className="flex flex-wrap items-center gap-2">
+                        <h3 className="text-base sm:text-lg font-bold text-white font-display">{selectedMsg.subject}</h3>
                         <span
                           className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider ${
                             selectedMsg.status === 'replied'
@@ -1224,32 +1250,22 @@ export const AdminPanel = ({ onBack }) => {
                         </span>
                       </div>
 
-                      <div className="flex flex-wrap items-center gap-3 text-xs text-slate-400">
+                      <div className="flex flex-wrap items-center gap-2 text-xs text-slate-400">
                         <span>
-                          From: <strong className="text-white">{selectedMsg.name}</strong> &lt;
-                          <span className="text-purple-400 font-mono">{selectedMsg.email}</span>&gt;
+                          From: <strong className="text-white">{selectedMsg.name}</strong>
                         </span>
-                        <span>•</span>
-                        <span>{new Date(selectedMsg.createdAt).toLocaleString()}</span>
+                        <span className="text-purple-400 font-mono break-all">&lt;{selectedMsg.email}&gt;</span>
+                        <span className="hidden sm:inline">•</span>
+                        <span className="hidden sm:inline">{new Date(selectedMsg.createdAt).toLocaleString()}</span>
                       </div>
-                    </div>
-
-                    <div className="flex items-center gap-2 self-end sm:self-auto">
-                      <button
-                        onClick={() => handleDeleteMessage(selectedMsg._id)}
-                        className="p-2 rounded-xl bg-rose-500/10 hover:bg-rose-500/20 border border-rose-500/20 text-rose-400 text-xs flex items-center gap-1.5 transition-colors"
-                        title="Delete inquiry"
-                      >
-                        <Trash2 className="w-3.5 h-3.5" />
-                        <span>Delete</span>
-                      </button>
+                      <div className="text-[10px] text-slate-500 sm:hidden">{new Date(selectedMsg.createdAt).toLocaleString()}</div>
                     </div>
                   </div>
 
                   {/* Status Toggle Bar */}
-                  <div className="flex items-center justify-between bg-slate-950/60 p-2.5 rounded-2xl border border-slate-800/80">
-                    <span className="text-[11px] font-semibold text-slate-400">Status:</span>
-                    <div className="flex items-center gap-1.5">
+                  <div className="flex flex-wrap items-center gap-2 bg-slate-950/60 p-2.5 rounded-2xl border border-slate-800/80">
+                    <span className="text-[11px] font-semibold text-slate-400 shrink-0">Status:</span>
+                    <div className="flex flex-wrap items-center gap-1.5">
                       {['unread', 'read', 'replied', 'archived'].map((st) => (
                         <button
                           key={st}
@@ -1309,16 +1325,16 @@ export const AdminPanel = ({ onBack }) => {
 
                   {/* DIRECT EMAIL REPLY WORKSTATION */}
                   <form onSubmit={handleSendReply} className="space-y-4 pt-4 border-t border-slate-800">
-                    <div className="flex items-center justify-between">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                       <div className="flex items-center gap-2 text-xs font-bold text-white">
-                        <div className="w-6 h-6 rounded-lg bg-purple-600/20 text-purple-400 flex items-center justify-center">
+                        <div className="w-6 h-6 rounded-lg bg-purple-600/20 text-purple-400 flex items-center justify-center shrink-0">
                           <Reply className="w-3.5 h-3.5" />
                         </div>
                         <span>Reply Directly to {selectedMsg.name}</span>
                       </div>
-                      <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-950 border border-slate-800 text-[11px] text-slate-300 font-mono">
-                        <span className="text-slate-500">To:</span>
-                        <strong className="text-purple-400">{selectedMsg.email}</strong>
+                      <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-950 border border-slate-800 text-[11px] text-slate-300 font-mono overflow-hidden">
+                        <span className="text-slate-500 shrink-0">To:</span>
+                        <strong className="text-purple-400 truncate">{selectedMsg.email}</strong>
                       </div>
                     </div>
 
@@ -1372,11 +1388,11 @@ export const AdminPanel = ({ onBack }) => {
                     </div>
 
                     {/* Actions Bar */}
-                    <div className="flex items-center justify-between pt-2">
+                    <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2 pt-2">
                       <button
                         type="button"
                         onClick={() => setReplyMessage('')}
-                        className="px-3 py-1.5 rounded-xl bg-slate-950 hover:bg-slate-800 border border-slate-800 text-xs text-slate-400 hover:text-white transition-colors"
+                        className="px-3 py-1.5 rounded-xl bg-slate-950 hover:bg-slate-800 border border-slate-800 text-xs text-slate-400 hover:text-white transition-colors text-center"
                       >
                         Clear Form
                       </button>
@@ -1384,16 +1400,16 @@ export const AdminPanel = ({ onBack }) => {
                       <button
                         type="submit"
                         disabled={isSendingReply || !replyMessage.trim()}
-                        className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white text-xs font-bold flex items-center gap-2 shadow-lg shadow-purple-600/30 transition-all disabled:opacity-50 disabled:cursor-not-allowed transform active:scale-95"
+                        className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white text-xs font-bold flex items-center justify-center gap-2 shadow-lg shadow-purple-600/30 transition-all disabled:opacity-50 disabled:cursor-not-allowed active:scale-95"
                       >
                         {isSendingReply ? (
                           <>
                             <Loader2 className="w-4 h-4 animate-spin" />
-                            <span>Sending Email to {selectedMsg.email}...</span>
+                            <span className="truncate">Sending to {selectedMsg.email}...</span>
                           </>
                         ) : (
                           <>
-                            <Send className="w-4 h-4" />
+                            <Send className="w-4 h-4 shrink-0" />
                             <span>Send Reply to {selectedMsg.name}</span>
                           </>
                         )}
